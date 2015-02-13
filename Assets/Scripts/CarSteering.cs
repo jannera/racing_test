@@ -27,7 +27,7 @@ public class CarSteering : MonoBehaviour {
 
         for (int i = 0; i < torqueWheels.Length; i++)
         {
-            torqueWheels[i].motorTorque = motor * motorMax * rigidbody.mass;
+            torqueWheels[i].motorTorque = motor * motorMax * torqueWheels[i].mass;
         }
 
         for (int i = 0; i < brakingWheels.Length; i++)
