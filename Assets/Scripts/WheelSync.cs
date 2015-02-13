@@ -19,7 +19,6 @@ public class WheelSync : MonoBehaviour {
         tmp = transform.localEulerAngles;
         tmp.y = collider.steerAngle - transform.localEulerAngles.z;
         transform.localEulerAngles = tmp;
-        
 
         // move the wheel to match the suspension
         if (collider.GetGroundHit(out wheelHit))
