@@ -5,10 +5,13 @@ public class CarSteering : MonoBehaviour {
     public WheelCollider[] steeringWheels;
     public WheelCollider[] torqueWheels;
     public WheelCollider[] brakingWheels;
-
-    public float steerMax = 20;
-    public float motorMax = 10;
+    
+    public float steerMinSpeed = 20;
+    public float steerMaxSpeed = 1;
+    public float motorMax = 50;
     public float brakeMax = 100;
+
+    public float steerFactor;
 	
 	void Start () {
 
@@ -20,9 +23,13 @@ public class CarSteering : MonoBehaviour {
         float motor = Mathf.Clamp(Input.GetAxis("Vertical"), 0, 1);
         float brake = -1 * Mathf.Clamp(Input.GetAxis("Vertical"), -1, 0);
 
+        // Steering depends on speed of the car
+        float speedFactor = rigidbody.velocity.magnitude / motorMax;
+        steerFactor = Mathf.Lerp(steerMinSpeed, steerMaxSpeed, speedFactor);
+
         for (int i = 0; i < steeringWheels.Length; i++)
         {
-            steeringWheels[i].steerAngle = steer * steerMax;
+            steeringWheels[i].steerAngle = steer * steerFactor;
         }
 
         for (int i = 0; i < torqueWheels.Length; i++)

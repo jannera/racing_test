@@ -22,7 +22,7 @@ public class WheelSync : MonoBehaviour {
 
         // move the wheel to match the suspension
         if (collider.GetGroundHit(out wheelHit))
-        {
+        {            
             transform.position = wheelHit.point + collider.transform.up * collider.radius;
         }
         else
