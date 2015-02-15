@@ -61,7 +61,6 @@ public class CarSteering : MonoBehaviour {
 
     private float MetersPerSecondToKmPerH(float v)
     {
-        Debug.Log(v + " -> " + v * 60 * 60 / 1000f);
         return v * 60 * 60 / 1000f;
     }
 }

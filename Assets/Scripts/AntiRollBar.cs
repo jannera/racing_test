@@ -13,10 +13,10 @@ public class AntiRollBar : MonoBehaviour {
         travelA = travelB = 1.0f;
 
         groundedA = a.GetGroundHit(out wheelHit);
-        groundedB = b.GetGroundHit(out wheelHit);
         if (groundedA) {
             travelA = GetTravel(a);
         }
+        groundedB = b.GetGroundHit(out wheelHit);
         if (groundedB)
         {
             travelB = GetTravel(b);

@@ -9,18 +9,26 @@ public class MagnetWheels : MonoBehaviour {
     WheelHit wheelHit = new WheelHit();
     RaycastHit raycastHit = new RaycastHit();
     Vector3 force, tmp, tmp2;
+    float[] normalSpringValues;
 
     void Start()
     {
         forces = new Vector3[colliders.Length];
+        normalSpringValues = new float[colliders.Length];
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            normalSpringValues[i] = colliders[i].suspensionSpring.spring;
+        }
     }
 
     private Vector3[] forces;
 
+    private bool magnetOn = false;
+
     // apply magnet only if every wheel is touching or close enough
     void FixedUpdate()
     {
-        bool allAreTouching = true;
+        magnetOn = true;
         for (int i = 0; i < colliders.Length; i++)
         {
             WheelCollider c = colliders[i];
@@ -30,80 +38,46 @@ public class MagnetWheels : MonoBehaviour {
             }
             else if (Physics.Raycast(c.transform.position, -c.transform.up, out raycastHit, maxMagnetDst))
             {
-                Debug.Log("hit " + raycastHit.collider);
+                // Debug.Log("hit " + raycastHit.collider);
                 forces[i] = GetForceFromColliderToPoint(c, raycastHit.point);
                 // todo: should we reduce the force based on the distance?   
             }
             else
             {
-                allAreTouching = false;
+                magnetOn = false;
                 break;
             }
         }
 
-        if (allAreTouching)
+        if (magnetOn)
         {
             for (int i = 0; i < forces.Length; i++)
             {
-                rigidbody.AddForceAtPosition(forces[i], colliders[i].transform.position, ForceMode.Acceleration);
-                // todo: we should probably do this only with torque, not force..
-                /*
-                float f = -1;
-                if (i == 0 || i == 2)
-                {
-                    f = 1;
-                }
-                
-                 rigidbody.AddTorque(GetAxisForTorque(rigidbody.worldCenterOfMass, colliders[i].transform.position) 
-                    * -f * magnetAcceleration / Time.deltaTime, ForceMode.Acceleration);
-                 */
-                
-                /*
-                float horizontal = 1, vertical = 1;
-                if (i == 1)
-                {
-                    horizontal = -1;
-                }
-                else if (i == 2)
-                {
-                    vertical = -1;
-                }
-                else if (i == 3)
-                {
-                    horizontal = -1;
-                    vertical = -1;
-                }
-                force.Set(vertical, 0, horizontal);
-                force *= magnetAcceleration * Time.deltaTime;
-                Debug.Log(force);
-                rigidbody.AddRelativeTorque(force, ForceMode.Acceleration);
-                 * */
+                WheelCollider c = colliders[i];
+                rigidbody.AddForceAtPosition(forces[i], c.transform.position, ForceMode.Acceleration);
+                float force = forces[i].magnitude * rigidbody.mass;
+                spring = c.suspensionSpring;
+                spring.spring = normalSpringValues[i] + force;
+                c.suspensionSpring = spring;
             }
         }
     }
 
     void Update()
     {
-        return;
-        foreach (WheelCollider c in colliders)
+        if (magnetOn)
         {
-            Debug.DrawLine(c.transform.position, c.transform.position + GetAxisForTorque(rigidbody.worldCenterOfMass, c.transform.position), Color.blue);
+            for (int i = 0; i < forces.Length; i++)
+            {
+                Debug.DrawLine(colliders[i].transform.position, colliders[i].transform.position + forces[i].normalized, Color.blue);
+            }
         }
     }
 
-    Plane p = new Plane();
-
-    Vector3 GetAxisForTorque(Vector3 cog, Vector3 pos)
-    {
-        Vector3 fromCoGtoCollider = pos - cog;
-        Vector3 reflected = Vector3.Reflect(fromCoGtoCollider, transform.up);
-
-        p.Set3Points(Vector3.zero, fromCoGtoCollider, reflected);
-        return p.normal;
-    }
+    JointSpring spring;
 
     Vector3 GetForceFromColliderToPoint(WheelCollider c, Vector3 point)
     {
-        return (point - c.transform.position).normalized * magnetAcceleration / Time.deltaTime;
+        return (point - c.transform.position).normalized * magnetAcceleration * Time.deltaTime;
     }
 }
