@@ -10,6 +10,7 @@ public class CarSteering : MonoBehaviour {
     public float steerMaxSpeed = 1;
     public float motorMax = 50;
     public float brakeMax = 100;
+    public float maxVelocity = 100; // km/h
 
     public float steerFactor;
 	
@@ -32,14 +33,35 @@ public class CarSteering : MonoBehaviour {
             steeringWheels[i].steerAngle = steer * steerFactor;
         }
 
+        float currentVel = rigidbody.velocity.magnitude;
+        currentVel = MetersPerSecondToKmPerH(currentVel);
+        // Debug.Log(currentVel);
+
+        
+        
         for (int i = 0; i < torqueWheels.Length; i++)
         {
-            torqueWheels[i].motorTorque = motor * motorMax * torqueWheels[i].mass;
+            if (currentVel < maxVelocity)
+            {
+                torqueWheels[i].motorTorque = motor * motorMax * torqueWheels[i].mass;
+            }
+            else
+            {
+                torqueWheels[i].motorTorque = 0;
+            }
+                
         }
+        
 
         for (int i = 0; i < brakingWheels.Length; i++)
         {
             brakingWheels[i].brakeTorque = brake * brakeMax * rigidbody.mass;
         }
 	}
+
+    private float MetersPerSecondToKmPerH(float v)
+    {
+        Debug.Log(v + " -> " + v * 60 * 60 / 1000f);
+        return v * 60 * 60 / 1000f;
+    }
 }
