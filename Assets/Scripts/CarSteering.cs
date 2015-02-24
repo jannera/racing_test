@@ -84,7 +84,7 @@ public class CarSteering : MonoBehaviour {
 
     private void brake(float brakeValue) {
         for (int i = 0; i < brakingWheels.Length; i++) {
-            if (Input.GetKey(KeyCode.Space)) {
+            if (Input.GetButton("Break")) {
                 brakingWheels[i].brakeTorque = brakeValue * brakeMax * rigidbody.mass;
             } else {
                 brakingWheels[i].brakeTorque = 0;
