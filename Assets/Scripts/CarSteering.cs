@@ -52,7 +52,7 @@ public class CarSteering : MonoBehaviour {
         float torqueModifier = 1f;
         float currentVel = GetCurrentVelocityKmPerH();
 
-        if (Input.GetKey(KeyCode.RightControl)) {
+        if (Input.GetButton("Boost")) {
             maxVelocityModifier = boosterMaxVelocityModifier;
             torqueModifier = boosterTorqueModifier;
             steerFactor *= boosterSteerModifier;
