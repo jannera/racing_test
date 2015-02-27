@@ -6,7 +6,9 @@ public class Jumping : MonoBehaviour {
     private WheelCollider[] wheels;
 
     private float chargingTimer = 0f;
+    private float atMaxTimer = 0f;
     public float maxChargingTimer = 1.5f;
+    public float timeToHoldAtMaxCharge = 0.2f;
 
     public float fullJumpHeight = 3f;
 
@@ -16,6 +18,10 @@ public class Jumping : MonoBehaviour {
 
     private float wheelsOffGroundTimer = 0;
     private float[] normalSuspensionDistance;
+
+    private enum GolfCharger { INCREASING, DECREASING, MAX };
+
+    private GolfCharger risingStatus = GolfCharger.INCREASING;
 
 	void Start () {
         wheels = GetComponentsInChildren<WheelCollider>();
@@ -71,11 +77,42 @@ public class Jumping : MonoBehaviour {
     void StartChargingForJump()
     {
         chargingTimer = 0;
+        risingStatus = GolfCharger.INCREASING;
     }
 
     void ContinueCharging()
     {
-        chargingTimer += Time.deltaTime;
+        if (risingStatus == GolfCharger.INCREASING)
+        {
+            chargingTimer += Time.deltaTime;
+
+            if (chargingTimer > maxChargingTimer)
+            {
+                chargingTimer = maxChargingTimer;
+                atMaxTimer = 0;
+                risingStatus = GolfCharger.MAX;
+            }
+        }
+        else if (risingStatus == GolfCharger.DECREASING)
+        {
+            chargingTimer -= Time.deltaTime;
+
+            if (chargingTimer < 0)
+            {
+                chargingTimer = 0;
+                risingStatus = GolfCharger.INCREASING;
+            }
+        }
+        else if (risingStatus == GolfCharger.MAX)
+        {
+            atMaxTimer += Time.deltaTime;
+
+            if (atMaxTimer > timeToHoldAtMaxCharge)
+            {
+                risingStatus = GolfCharger.DECREASING;
+            }
+        }
+        
         UpdateSuspensionDistances();
     }
 
@@ -89,7 +126,7 @@ public class Jumping : MonoBehaviour {
 
     public float GetChargeStatus()
     {
-        return Mathf.Lerp(0, maxChargingTimer, chargingTimer);
+        return chargingTimer/maxChargingTimer;
     }
 
     private float GetFullJumpStartingVelocity()
