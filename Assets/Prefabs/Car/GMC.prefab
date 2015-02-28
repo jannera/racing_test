@@ -2153,7 +2153,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: -.707106829, z: 0, w: .707106829}
-  m_LocalPosition: {x: 79.8000031, y: 7.0999999, z: 8.60000038}
+  m_LocalPosition: {x: 99.0800018, y: 7.0999999, z: 31.0400009}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 497482}
@@ -5576,7 +5576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5ca7f6ce94fc534fb904f390ed614da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rocketAcceleration: 10
+  rocketAcceleration: 7
 --- !u!114 &11463490
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5588,8 +5588,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2777155670b3ee4990e74adccad05ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxChargingTimer: 1.5
-  fullJumpHeight: 5
+  maxChargingTimer: .75
+  timeToHoldAtMaxCharge: .300000012
+  fullJumpHeight: 9
   minSecsToBeConsideredOffGround: .5
 --- !u!114 &11473034
 MonoBehaviour:
@@ -5692,13 +5693,13 @@ MonoBehaviour:
   steerMinSpeed: 35
   steerMaxSpeed: 10
   motorMax: 25
-  brakeMax: 5
+  brakeMax: .600000024
   maxVelocity: 120
-  reverseMax: 15
+  reverseMax: 30
   steerFactor: 0
-  boosterTorqueModifier: 1
+  boosterTorqueModifier: 1.5
   boosterMaxVelocityModifier: 1.75
-  boosterSteerModifier: .5
+  boosterSteerModifier: .300000012
 --- !u!114 &11496954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5721,7 +5722,7 @@ WheelCollider:
   m_Radius: .709999979
   m_SuspensionDistance: .5
   m_SuspensionSpring:
-    spring: 2600
+    spring: 2200
     damper: 500
     targetPosition: .5
   m_Mass: 50
@@ -5730,13 +5731,13 @@ WheelCollider:
     extremumValue: 30000
     asymptoteSlip: 2
     asymptoteValue: 5000
-    stiffnessFactor: .5
+    stiffnessFactor: .400000006
   m_SidewaysFriction:
-    extremumSlip: .5
-    extremumValue: 1000
-    asymptoteSlip: 2
-    asymptoteValue: 1000
-    stiffnessFactor: .5
+    extremumSlip: .349999994
+    extremumValue: 1500
+    asymptoteSlip: 1.5
+    asymptoteValue: 700
+    stiffnessFactor: .100000001
   m_Enabled: 1
 --- !u!146 &14696946
 WheelCollider:
@@ -5748,7 +5749,7 @@ WheelCollider:
   m_Radius: .709999979
   m_SuspensionDistance: .5
   m_SuspensionSpring:
-    spring: 2600
+    spring: 2200
     damper: 500
     targetPosition: .5
   m_Mass: 50
@@ -5757,13 +5758,13 @@ WheelCollider:
     extremumValue: 30000
     asymptoteSlip: 2
     asymptoteValue: 5000
-    stiffnessFactor: .5
+    stiffnessFactor: .400000006
   m_SidewaysFriction:
-    extremumSlip: .5
-    extremumValue: 1000
-    asymptoteSlip: 2
-    asymptoteValue: 1000
-    stiffnessFactor: .5
+    extremumSlip: .349999994
+    extremumValue: 1500
+    asymptoteSlip: 1.5
+    asymptoteValue: 700
+    stiffnessFactor: .100000001
   m_Enabled: 1
 --- !u!146 &14696948
 WheelCollider:
@@ -5775,7 +5776,7 @@ WheelCollider:
   m_Radius: .709999979
   m_SuspensionDistance: .5
   m_SuspensionSpring:
-    spring: 2600
+    spring: 2200
     damper: 500
     targetPosition: .5
   m_Mass: 50
@@ -5784,13 +5785,13 @@ WheelCollider:
     extremumValue: 30000
     asymptoteSlip: 2
     asymptoteValue: 5000
-    stiffnessFactor: .5
+    stiffnessFactor: .400000006
   m_SidewaysFriction:
-    extremumSlip: .5
-    extremumValue: 1000
-    asymptoteSlip: 2
-    asymptoteValue: 1000
-    stiffnessFactor: .5
+    extremumSlip: .349999994
+    extremumValue: 1500
+    asymptoteSlip: 1.5
+    asymptoteValue: 700
+    stiffnessFactor: .100000001
   m_Enabled: 1
 --- !u!146 &14696950
 WheelCollider:
@@ -5802,7 +5803,7 @@ WheelCollider:
   m_Radius: .709999979
   m_SuspensionDistance: .5
   m_SuspensionSpring:
-    spring: 2600
+    spring: 2200
     damper: 500
     targetPosition: .5
   m_Mass: 50
@@ -5811,13 +5812,13 @@ WheelCollider:
     extremumValue: 30000
     asymptoteSlip: 2
     asymptoteValue: 5000
-    stiffnessFactor: .5
+    stiffnessFactor: .400000006
   m_SidewaysFriction:
-    extremumSlip: .5
-    extremumValue: 1000
-    asymptoteSlip: 2
-    asymptoteValue: 1000
-    stiffnessFactor: .5
+    extremumSlip: .349999994
+    extremumValue: 1500
+    asymptoteSlip: 1.5
+    asymptoteValue: 700
+    stiffnessFactor: .100000001
   m_Enabled: 1
 --- !u!1001 &100100000
 Prefab:
