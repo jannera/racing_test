@@ -91,12 +91,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   height: 2.20000005
-  positionDamping: 3
-  velocityDamping: 2.5
-  distance: 12
+  positionDamping: 2
   ignoreLayers:
     serializedVersion: 2
-    m_Bits: 4294967039
+    m_Bits: 4294967038
+  fieldOfView:
+    min: 55
+    max: 72
+  viewDistance:
+    min: 8.5
+    max: 12.5
+  maxSpeedFactor: 70
+  cameraAngleAdjust: 20
+  directionChangeThreshold: .200000003
 --- !u!124 &12410730
 Behaviour:
   m_ObjectHideFlags: 1

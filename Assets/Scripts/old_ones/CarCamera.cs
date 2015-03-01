@@ -1,22 +1,72 @@
 using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
+public class MinMax
+{
+	public MinMax()
+	{
+		min = 0;
+		max = 1;
+	}
+	
+	public MinMax(float min, float max)
+	{
+		this.min = min;
+		this.max = max;
+	}
+	
+	public float min;
+	public float max;
+}	
+
 public class CarCamera : MonoBehaviour
 {
 	public Transform target = null;
-	public float height = 1f;
-	public float positionDamping = 3f;
-	public float velocityDamping = 3f;
-	public float distance = 4f;
-	public LayerMask ignoreLayers = -1;
+	
+	/// <summary>
+	/// Camera height adjustment. This sets the "LookAt" position higher (positive) or lower (negative).
+	/// </summary>
+	public float height = 2.2f;
 
+	/// <summary>
+	/// Aggressivity of camera turning. Lower value slows the turn.
+	/// </summary>
+	public float positionDamping = 2f;
+
+	/// <summary>
+	/// Layers to ignore in RayCast.
+	/// </summary>
+	public LayerMask ignoreLayers = -1;
+	
+	public MinMax fieldOfView = new MinMax(55, 72);
+	public MinMax viewDistance = new MinMax(8.5f, 12.5f);
+	
+	/// <summary>
+	/// Maximum speed used for Lerps in FOV and VD calculations.
+	/// </summary>
+	public float maxSpeedFactor = 70f;
+	
+	/// <summary>
+	/// Angle in which the camera views to target. Positive value points camera downwards.
+	/// </summary>
+	public int cameraAngleAdjust = 20;
+
+	/// <summary>
+	/// Velocity that the target must have before its velocity vector is used in calculation.
+	/// </summary>
+	public float directionChangeThreshold = 0.2f;
+	
 	private RaycastHit hit = new RaycastHit();
 
-	private Vector3 prevVelocity = Vector3.zero;
+	/// <summary>
+	/// Layers that hit RayCast. Inversion of ignoreLayers.
+	/// </summary>
 	private LayerMask raycastLayers = -1;
-	
+
 	private Vector3 currentVelocity = Vector3.zero;
-	
+	private Vector3 lastUsedVelocity = Vector3.forward;
+
 	void Start()
 	{
 		raycastLayers = ~ignoreLayers;
@@ -24,29 +74,72 @@ public class CarCamera : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		currentVelocity = Vector3.Lerp(prevVelocity, target.root.rigidbody.velocity, velocityDamping * Time.deltaTime);
+		currentVelocity = target.root.rigidbody.velocity;
 		currentVelocity.y = 0;
-		prevVelocity = currentVelocity;
 	}
-	
+
 	void LateUpdate()
 	{
-		float speedFactor = Mathf.Clamp01(target.root.rigidbody.velocity.magnitude / 70.0f);
-		camera.fieldOfView = Mathf.Lerp(55, 72, speedFactor);
-		float currentDistance = Mathf.Lerp(12.5f, 6.5f, speedFactor);
-		
-		currentVelocity = currentVelocity.normalized;
-		
-		Vector3 newTargetPosition = target.position + Vector3.up * height;
-		Vector3 newPosition = newTargetPosition - (currentVelocity * currentDistance);
-		newPosition.y = newTargetPosition.y;
-		
-		Vector3 targetDirection = newPosition - newTargetPosition;
-		if(Physics.Raycast(newTargetPosition, targetDirection, out hit, currentDistance, raycastLayers))
-			newPosition = hit.point;
-		
-		transform.position = newPosition;
-		transform.LookAt(newTargetPosition);
-		
+		float speedFactor = Mathf.Clamp01(target.root.rigidbody.velocity.magnitude / maxSpeedFactor);
+		camera.fieldOfView = Mathf.Lerp(fieldOfView.min, fieldOfView.max, speedFactor);
+		float currentDistance = Mathf.Lerp(viewDistance.min, viewDistance.max, speedFactor);
+
+		// Whether to use current velocity or last known velocity (to avoid looking at zero vector).
+		Quaternion velocityRotation;
+		if (currentVelocity.magnitude > directionChangeThreshold) {
+			velocityRotation = Quaternion.LookRotation(currentVelocity);
+			lastUsedVelocity = currentVelocity;
+		} else {
+			velocityRotation = Quaternion.LookRotation(lastUsedVelocity);
+		}
+
+		/* Top view of targetAngle calculation:
+		 *
+		 *  ----> velocityRotation (= target camera direction)
+		 * |\
+		 * | v targetAngle (= result angle)
+		 * |
+		 * v transform (= current camera direction)
+		 */
+		// Target direction.
+		float targetAngle = Mathf.LerpAngle(
+			transform.eulerAngles.y,
+			velocityRotation.eulerAngles.y,
+			positionDamping * Time.deltaTime
+		);
+
+
+		/* Side picture:
+		 *
+		 *  < distancedCamera(world) = -cameraVector(local)
+		 *   \__
+		 *      \(hit.point(world))
+		 *       \__
+		 *          \
+		 *           ^viewTargetPosition(world)
+		 *   (height)|
+		 *           |
+		 *        target ------> velocity
+		 */
+		Quaternion targetRotation;
+		Vector3 cameraVector;
+		Vector3 viewTargetPosition;
+		Vector3 distancedCamera;
+
+		targetRotation = Quaternion.Euler(cameraAngleAdjust, targetAngle, 0);
+		cameraVector = (targetRotation * Vector3.forward * currentDistance);
+
+		viewTargetPosition = target.position + Vector3.up * height;
+		distancedCamera = viewTargetPosition - cameraVector;
+
+		// Find out whether view is occupied.
+		float cameraSourceHeight = currentDistance;
+		if (Physics.Raycast(viewTargetPosition, -cameraVector, out hit, cameraSourceHeight, raycastLayers)) {
+			float resultDistance = (hit.point - viewTargetPosition).magnitude;
+			distancedCamera = viewTargetPosition - cameraVector.normalized * resultDistance;
+		}
+
+		transform.position = distancedCamera;
+		transform.LookAt(viewTargetPosition);
 	}
 }
