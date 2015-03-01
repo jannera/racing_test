@@ -56,7 +56,9 @@ public class CarCamera : MonoBehaviour
 	/// Velocity that the target must have before its velocity vector is used in calculation.
 	/// </summary>
 	public float directionChangeThreshold = 0.2f;
-	
+
+	public int peekAngle = 60;
+
 	private RaycastHit hit = new RaycastHit();
 
 	/// <summary>
@@ -101,10 +103,20 @@ public class CarCamera : MonoBehaviour
 		 * |
 		 * v transform (= current camera direction)
 		 */
+
+		float velocityAngle = velocityRotation.eulerAngles.y;
+		bool peekLeft = Input.GetButton("PeekLeft");
+		bool peekRight = Input.GetButton("PeekRight");
+		if (peekLeft && peekRight) {
+			velocityAngle += 180;
+		} else if (peekLeft || peekRight) {
+			velocityAngle += peekAngle * (peekRight ? 1 : -1);
+		}
+
 		// Target direction.
 		float targetAngle = Mathf.LerpAngle(
 			transform.eulerAngles.y,
-			velocityRotation.eulerAngles.y,
+			velocityAngle,
 			positionDamping * Time.deltaTime
 		);
 

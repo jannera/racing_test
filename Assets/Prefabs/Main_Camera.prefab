@@ -104,6 +104,7 @@ MonoBehaviour:
   maxSpeedFactor: 70
   cameraAngleAdjust: 20
   directionChangeThreshold: .200000003
+  peekAngle: 60
 --- !u!124 &12410730
 Behaviour:
   m_ObjectHideFlags: 1
