@@ -1,0 +1,110 @@
+fileFormatVersion: 2
+guid: ad9c88a120206184681c6085dfa6f1bc
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: axel_back
+    100002: axel_end_back_L
+    100004: axel_end_back_R
+    100006: //RootNode
+    100008: Car_back_B_trunk_cover_L
+    100010: Car_back_B_trunk_cover_R
+    100012: Exhaust_pipe
+    100014: Gas_tank
+    100016: LB_tire_point
+    100018: RB_tire_point
+    100020: Rocket_booster
+    400000: axel_back
+    400002: axel_end_back_L
+    400004: axel_end_back_R
+    400006: //RootNode
+    400008: Car_back_B_trunk_cover_L
+    400010: Car_back_B_trunk_cover_R
+    400012: Exhaust_pipe
+    400014: Gas_tank
+    400016: LB_tire_point
+    400018: RB_tire_point
+    400020: Rocket_booster
+    2300000: axel_back
+    2300002: axel_end_back_L
+    2300004: axel_end_back_R
+    2300006: //RootNode
+    2300008: Car_back_B_trunk_cover_L
+    2300010: Car_back_B_trunk_cover_R
+    2300012: Exhaust_pipe
+    2300014: Gas_tank
+    2300016: Rocket_booster
+    3300000: axel_back
+    3300002: axel_end_back_L
+    3300004: axel_end_back_R
+    3300006: //RootNode
+    3300008: Car_back_B_trunk_cover_L
+    3300010: Car_back_B_trunk_cover_R
+    3300012: Exhaust_pipe
+    3300014: Gas_tank
+    3300016: Rocket_booster
+    4300000: Car_back_B
+    4300002: Exhaust_pipe
+    4300004: Gas_tank
+    4300006: Rocket_booster
+    4300008: Car_back_B_trunk_cover_R
+    4300010: Car_back_B_trunk_cover_L
+    4300012: axel_back
+    4300014: axel_end_back_R
+    4300016: axel_end_back_L
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
